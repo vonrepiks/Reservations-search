@@ -1,0 +1,65 @@
+Test 1 
+
+Description: Test if no available cancellationFees 
+
+Input:
+minPrice: 100
+maxPrice: 100
+currency: LOC
+
+Output: 
+No available cancelations fees
+---------------------------------------------------------------------
+
+Test 2 
+
+Description: Test if day of cancellationFee is current Date 
+
+Input:
+minPrice: 100
+maxPrice: 100
+currency: EUR
+
+Output: 
+At least one cancellationFee 
+12 days before 29/05/2018: 54 EUR cancellation fee
+---------------------------------------------------------------------
+
+Test 3 
+
+Description: Test if reservation is expired 
+
+Input:
+minPrice: 150
+maxPrice: 150
+currency: LOC
+
+Output: 
+No reservations
+---------------------------------------------------------------------
+
+Test 4
+
+Description: Test if given reservation has rooms with same fromDate and in details will see correct values of cancellationFees  
+
+Input:
+minPrice: 130
+maxPrice: 130
+currency: LOC
+
+Output: 
+No reservations
+---------------------------------------------------------------------
+
+Test 5
+
+Description: Test with 10 rooms and different cancellation fees
+
+Input:
+minPrice: 3666
+maxPrice: 3666
+currency: EUR
+
+Output: 
+13 different cancellation fee lines
+---------------------------------------------------------------------

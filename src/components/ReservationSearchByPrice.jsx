@@ -3,6 +3,7 @@ import { FormGroup, ControlLabel, FormControl, Button, Col, Row } from 'react-bo
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import reservations from '../reservations.json';
+import Helpers from './Helpers';
 
 export default class ReservationSearchByPrice extends React.Component {
   constructor(props) {
@@ -91,12 +92,55 @@ export default class ReservationSearchByPrice extends React.Component {
     const priceName = 'price' + currency;
 
     return filteredReservations.map((filteredReservation, index) => {
-      const total = filteredReservation.total;
-      const thirtyDaysFee = (total * 10) / 100; // 10% cancellationFee
-      const tenDaysFee = (total * 20) / 100;    // 20% cancellationFee
-      const sixDaysFee = (total * 50) / 100;    // 50% cancellationFee
-      const oneDayFee = total;                  // 100% cancellationFee
-      let totalCancellationFees = { 0: thirtyDaysFee, 1: tenDaysFee, 2: sixDaysFee, 3: oneDayFee };
+      let totalCancellationFees = {};
+      const reservation = filteredReservation.reservation;
+      const arrivalDate = moment(reservation.arrivalDate, 'DD/MM/YYYY').toDate();
+      let dates = [];
+      reservation.rooms.forEach((room) => {
+        room.cancellationFees.forEach((cancellationFee) => {
+          dates.push(moment(cancellationFee.fromDate, 'DD/MM/YYYY').toDate());
+        })
+      });
+
+      dates.sort((date1, date2) => {
+        return date1 - date2;
+      });
+      dates = Helpers.uniqueArr(dates);
+      for (let i = 0; i < dates.length; i++) {
+        const currentDate = dates[i];
+        reservation.rooms.forEach((room) => {
+          const minDate = new Date(-8640000000000000);
+
+          let hasSameDate = false;
+          let closestDate = minDate;
+          let currentFee;
+          const daysDiff = Helpers.dateDiffInDays(arrivalDate, currentDate);
+
+          for (let i = 0; i < room.cancellationFees.length; i++) {
+            const fee = room.cancellationFees[i];
+            const fromDate = moment(fee.fromDate, 'DD/MM/YYYY').toDate();
+            if (currentDate.getTime() === fromDate.getTime()) {
+              if (!totalCancellationFees[daysDiff]) {
+                totalCancellationFees[daysDiff] = 0;
+              }
+              hasSameDate = true;
+              totalCancellationFees[daysDiff] += fee[priceName];
+              break;
+            }
+            if (fromDate.getTime() < currentDate.getTime() && closestDate.getTime() < fromDate.getTime()) {
+              closestDate = fromDate;
+              currentFee = fee;
+            }
+          }
+
+          if (!hasSameDate && closestDate.getTime() - minDate.getTime() !== 0) {
+            if (!totalCancellationFees[daysDiff]) {
+              totalCancellationFees[daysDiff] = 0;
+            }
+            totalCancellationFees[daysDiff] += currentFee[priceName];
+          }
+        });
+      }
       return (
         <div className={`reservation reservation-${index}`} key={index}>
           <div className="text">Reservation</div>
