@@ -1,0 +1,140 @@
+body {
+  background: url("../images/hotel2.jpg");
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.container {
+  h1 {
+    margin: 5% 0;
+    font-size: 5vw;
+    color: 	#FFE4E1;
+  }
+  text-align: center;
+  .select-label {
+    color: white;
+  }
+  .filtered-reservations {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    .reservation {
+      background-color: #FFE4E1;
+      border-radius: 30px;
+      margin: 3%;
+      padding: 2%;
+      height: 100%;
+      min-width: 200px;
+      button,
+      .text {
+        float: left;        
+        display: inline-block;
+      }
+      button {
+        float: right;
+        border-color: red;
+        a {
+          color: red;
+        }
+      }
+    }
+  }
+  .details {
+    .details-background {
+      background-color: rgba(255, 255, 255, 0.8);
+      height: 55vh;
+    }
+    .details-content {
+      position: absolute;
+      padding: 20px;
+      top: 20vh;
+      left: 0;
+      font-size: 1.5em;
+      line-height: 60px;
+      width: 100%;
+      .fees {
+        -webkit-padding-start: 0px;
+        list-style: none;
+      }
+    }
+  }
+  
+  .back-button {
+    a {
+      color: white;
+    }
+  }
+
+  .currency-dropdown {
+    margin-top: 30px;
+  }
+
+  .not-found {
+    margin: 10% 0;
+    .not-found-page-image {
+      background-image: url("../images/404.gif");
+      height: 65vh;
+      background-size: 100%;
+      border-radius: 100px;
+      border: 20px solid #FFE4E1;
+    }
+  }
+}
+
+@media only screen and (max-width: 377px) {
+  .container {
+    .details {
+      .details-background {
+        height: 150vh;
+      }
+      .details-content {
+        line-height: 30px;
+        top: 10vh;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) , screen and (min-width: 378px) {
+  .container {
+    .details {
+      .details-background {
+        height: 65vh;
+      }
+      .details-content {
+        line-height: 40px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 991px) , screen and (min-width: 768px) {
+  .container {
+    .details {
+      .details-background {
+        height: 80vh;
+      }
+      .details-content {
+        line-height: 50px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .container {
+    .details {
+      .details-background {
+        height: 60vh;
+      }
+      .details-content {
+        line-height: 60px;
+      }
+    }
+  }
+}
