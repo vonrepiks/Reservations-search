@@ -15,25 +15,16 @@ export default class ReservationDetails extends React.Component {
   getFees() {
     const { filteredReservation, currency, totalCancellationFees } =
       this.props.location.state;
-    const arrivalDateString = filteredReservation.reservation.arrivalDate;
-    const arrivalDate = moment(arrivalDateString, 'DD/MM/YYYY').toDate();
-    const currentDate = new Date();
-    const diffDays = Helpers.dateDiffInDays(arrivalDate, currentDate)
-
-    let hasValidCancellationFee = false;
-    const cancellationFees = Object.keys(totalCancellationFees).map((cancellationFeeDays, index) => {
-      if (diffDays >= cancellationFeeDays) {
-        hasValidCancellationFee = true;
-        return (
-          <li key={index}>{`${cancellationFeeDays} days before ${arrivalDateString}: ${totalCancellationFees[cancellationFeeDays]} ${currency} cancellation fee`}</li>
-        )
-      }
-      return null;
-    })
-
-    if (!hasValidCancellationFee || Object.keys(totalCancellationFees).length === 0) {
-      return <div>No available cancelations fees</div>;
+    if (Object.keys(totalCancellationFees).length === 0) {
+      return <div>No cancelations fees for this reservation</div>;
     }
+    const arrivalDateString = filteredReservation.reservation.arrivalDate;
+
+    const cancellationFees = Object.keys(totalCancellationFees).map((cancellationFeeDays, index) => {
+      return (
+        <li key={index}>{`${cancellationFeeDays} days before ${arrivalDateString}: ${totalCancellationFees[cancellationFeeDays]} ${currency} cancellation fee`}</li>
+      )
+    })
 
     return cancellationFees;
   }
